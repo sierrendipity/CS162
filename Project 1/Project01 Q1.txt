@@ -1,0 +1,88 @@
+Author: Sierra Brightly
+Date: 10/2/2023
+Title: Project #1 Part 1
+Description: 
+
+Design a Python class for a complex object (Dungeon) by making a list 
+describing your design for your object that shows:
+
+-A few components
+-A few attributes for each component (variables)
+-A few behaviors for each component (methods)
+-The relationship between the components, attributes, and behaviors 
+(perhaps with lines showing how a value would get used or calculated)
+
+
+Character
+
+    Attributes:
+    -Name
+    -Health
+    -Inventory
+    -Experience Points
+    -Level
+
+    Behaviors:
+    - Move
+    - Attack
+    - Use Item
+    - Level Up
+    - Gain Experience
+
+Objects
+
+    Attributes:
+    - Name
+    - Description
+    - Weight
+    - Value
+    
+    Behaviors:
+    - Pick Up
+    - Drop
+    - Examine
+    - Use
+
+
+World
+
+    Attributes:
+    - Map
+    - Environmental Effects
+    - Dungeon Theme
+    - Difficulty Level
+    
+    Behaviors:
+    - Generate Dungeon Layout
+    - Set Environmental Effects
+    - Change Theme
+    - Adjust Difficulty
+
+Monsters
+
+    Attributes:
+    - Name
+    - Health
+    - Attack Damage
+    - Experience Points
+
+    Behaviors:
+    - Attack
+    - Move
+    - Calculate Experience Points
+    - Drop Loot
+
+Relationship Between Components, Attributes, and Behaviors:
+- Character interacts with Objects by picking them up, using them, and dropping them.
+
+- Character can move and attack within the World, and the World sets environmental 
+effects and themes that affect the Character.
+
+- Monsters exist within the World and can attack the Character, resulting in health 
+changes and potential loot drops.
+
+- Character gains experience points from defeating Monsters, which can lead to leveling
+up and gaining new attributes.
+
+- Objects, such as weapons or healing potions, can be found in the World and added 
+to the Character's inventory, influencing their abilities and stats.
