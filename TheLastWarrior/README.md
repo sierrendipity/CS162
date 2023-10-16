@@ -3,40 +3,72 @@ Author: Sierra Brightly
 Student ID: X00465282
 Date: October 15, 2023 (Continuous upgrades still happening)
 
+
 Team:
+
 Sierra Brightly
+
 Bob
+
 Lisa
+
 Shiro
+
 Kevin
 
+
 Team Contributions:
+
 Sierra: 
+
     Player Class:
+    
     - Created player movement that allows for the "camera" to follow the character around in the game. 
+    
     - Collisions:
+    
         -When colliding with an enemy players are kicked back and the player loses a life
+        
         -When colliding with environmental objects (trees/blocks) the enemy is stopped and the camera is as well. 
+        
     - Player controls (Using ASWD to move)
+
+    
 Bob: 
+
     Sprites and Animations:
+    
     -Sourced and edited spritesheets to ensure that they will work for the game
+    
     -Created the animation setting for the sprites inclduing for the Player, Enemy, and Attacks. 
 
+
 Penny:
+
     Environmental Classes (trees, blocks, and ground):
+    
     - Created Block, Tree, and Ground classes that randomize between different selections for more variety in the game
+    
     - Create the tilemap, which configure which of the object can be placed where
     
+    
 Shiro:
+
     Enemy Class and Enemy Spawing:
+    
     - Handled how and where the enemy spawns
+    
     - Enemy Movement that allows enemies to "seek" players
     
+    
 June:
+
     Attack Class:
+    
     - Handles when the player attacks the enemy, making enemies disappear and adding points to the player's score. 
+    
     - Also worked on testing 
+    
     
 
 Features:
