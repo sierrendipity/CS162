@@ -40,8 +40,8 @@ class Player(pygame.sprite.Sprite):
         """initializes the playerparamters: self, game, x, y """
 
         # reset enemy count every time player is reinitialized
-        global ENEMY_COUNT
-        ENEMY_COUNT = 10
+        # global ENEMY_COUNT
+        # ENEMY_COUNT = 10
         self.game = game
 
         #player will be drawn above everything
@@ -101,16 +101,16 @@ class Player(pygame.sprite.Sprite):
         x_change_temp = 0
         y_change_temp = 0
 
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_a]:
             x_change_temp -= PLAYER_SPEED
             self.facing = 'left'
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d]:
             x_change_temp += PLAYER_SPEED
             self.facing = 'right'
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_w]:
             y_change_temp -= PLAYER_SPEED
             self.facing = 'up'
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_s]:
             y_change_temp += PLAYER_SPEED
             self.facing = 'down'
 
@@ -134,7 +134,6 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.game.all_sprites:
             sprite.rect.x -= self.x_change
             sprite.rect.y -= self.y_change
-
 
     def collide_enemy(self):
         """if player collides with enemy, player will be knocked back. 
@@ -296,21 +295,8 @@ class Enemy(pygame.sprite.Sprite):
         self.follow_range = 1  # Adjust this range as needed
 
     def update(self):
-
-        # player = self.game.player
-        # dx = player.rect.x - self.rect.x
-        # dy = player.rect.y - self.rect.y
-        # dist = math.sqrt(dx ** 2 + dy ** 2)
-
-        # if dist <= self.follow_range:
-        #     # Within follow range, enable follow behavior
-        #     self.seek_player()
-        # else:
-        #     # Outside follow range, move in a predetermined way
-        #     self.movement_predetermined()
             
         self.move()
-        # self.movement_predetermined()    
         self.animate()
         self.seek_player()
         
@@ -394,7 +380,6 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 # Set the default image when not moving
                 self.image = animations[self.facing][0]
-
 
 class Block(pygame.sprite.Sprite):
     """3 different rocks that are selected at random"""

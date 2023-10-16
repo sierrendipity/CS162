@@ -1,10 +1,5 @@
-DAD: 22
-JAB: 16
-SAD: 15
-SAD: 15
-ASD: 15
-ASD: 5
-QWE: 5
-ASD: 4
-CAR: 4
-FAR: 1
+AAA: 4
+AAA: 4
+ADA: 2
+DDD: 2
+AAA: 0

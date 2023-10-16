@@ -38,6 +38,7 @@ class Game:
         self.choose_char_background = pygame.image.load('./images/char_select_background.png')
         self.game_over_background = pygame.image.load('./images/gameover.png')
         self.game_won_background = pygame.image.load('./images/gamewon.png')
+        self.controls_background = pygame.image.load('./images/controls.png')
 
     def spawn_enemy(self):
         """Creates a new enemy in a valid spawn location"""
@@ -65,31 +66,20 @@ class Game:
                 if column == 'T':
                     Tree(self, j, i)
 
+    #fix this!!!
     def get_valid_spawn_locations(self):
         """Sets valid spawn areas for the enemies."""
-        valid_spawn_locations = []  # Initialize an empty list to store valid spawn locations
         
-        # Define the boundaries of the playable area based on trees
-        min_x, max_x, min_y, max_y = float('inf'), float('-inf'), float('inf'), float('-inf')
-        
-        # Iterate through the tilemap to find tree locations and determine the boundaries
+        # Initialize an empty list to store valid spawn locations
+        valid_spawn_locations = []
+
+        # Iterate through the tilemap to find grass locations and determine the boundaries
         for i, row in enumerate(tilemap):
             for j, column in enumerate(row):
-                if column == 'T':
-                    # Update the boundaries
-                    min_x = min(min_x, j)
-                    max_x = max(max_x, j)
-                    min_y = min(min_y, i)
-                    max_y = max(max_y, i)
-
-        # Iterate through the tilemap within the playable area to find valid spawn locations
-        for i in range(min_y, max_y + 1):
-            for j in range(min_x, max_x + 1):
-                if tilemap[i][j] != 'E':  # Check if the tile is not already occupied by an enemy
+                if column == '.':
                     valid_spawn_locations.append((j, i))
-        
-        return valid_spawn_locations
 
+        return valid_spawn_locations
 
     def new(self):
         """a new game starts"""
@@ -113,9 +103,9 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
-            if event.type ==  pygame.MOUSEBUTTONDOWN:
-                game.new()
-                game.main()
+            # if event.type ==  pygame.MOUSEBUTTONDOWN: #Test
+            #     game.new()
+            #     game.main()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if self.player.facing == 'up':
@@ -145,8 +135,6 @@ class Game:
                     self.spawn_enemy()
         except pygame.error:
             raise SystemExit("Error")
-
-
 
     def draw(self):
         """draw them here"""
@@ -197,116 +185,99 @@ class Game:
         self.screen.blit(lives1, lives_rect)
         # self.clock.tick(FPS)
         pygame.display.update()
-
+        
     def game_over(self):
-        """Game over menu"""
-
+        """Game Over"""
         game_over = True
-        entering_name = False
-        player_name = ""
-        score_saved = False
-        
+
         title = self.largefont.render('Game Over', True, BLACK)
-        title_rect = title.get_rect(x=150, y=20)
+        title_rect = title.get_rect(x=150, y=100)
 
-        # Clear the screen at the beginning of each frame
-        self.screen.blit(self.game_over_background, (0, 0))
+        # Record the time when the game over screen was initiated
+        game_over_start_time = pygame.time.get_ticks()
 
-        # Display the game over title
-        self.screen.blit(title, title_rect)
-
-        # Display the player's score in the middle of the screen
-        score_text = self.font.render(f'Score: {self.player.score}', True, WHITE)
-        score_rect = score_text.get_rect(x=230, y=160)
-        self.screen.blit(score_text, score_rect)
-
-        menu_button = Button(80, 380, 140, 30, WHITE, BLACK, 'Return To Menu', 32)
-
-        restart_button = Button(260, 380, 120, 30, WHITE, BLACK, 'Restart Game', 32)
-
-        exit_button = Button(440, 380, 100, 40, WHITE, BLACK, 'Exit Game', 32)
-
-        save_button = Button(400, 280, 100, 40, WHITE, BLACK, 'Save Score', 32)
-        
         while self.running and game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
 
-                # Check if the player's score is a high score
+            # Clear the screen at the beginning of each frame
+            self.screen.blit(self.game_over_background, (0, 0))
+
+            # Display the game over title
+            self.screen.blit(title, title_rect)
+
+            # Calculate the elapsed time since the game over screen was initiated
+            current_time = pygame.time.get_ticks()
+            elapsed_time = current_time - game_over_start_time
+
+            # If right time has passed, transition to score screen
+            if elapsed_time >= 1000:
+                game_over = False
                 if self.highscore_manager.is_highscore(self.player.score):
-                    entering_name = True
+                    self.show_high_score()
 
-                    self.screen.blit(save_button.image, save_button.rect)
-                    
-                    # Display the high score message
-                    highscore_text = self.smediumfont.render('HIGH SCORE!', True, YELLOW)
-                    highscore_rect = highscore_text.get_rect(x=50, y=185)
-                    self.screen.blit(highscore_text, highscore_rect)
+                else:
+                    self.show_score()
 
-                    # Display the instruction to enter a name
-                    enter_name_text = self.smallfont.render('ENTER NAME:', True, WHITE)
-                    enter_name_rect = enter_name_text.get_rect(x=175, y=310)
-                    self.screen.blit(enter_name_text, enter_name_rect)
+            self.clock.tick(FPS)
+            pygame.display.update()
 
-                    # Display 3 lines for name
-                    name_place_text = self.smallfont.render('_    _    _', True, WHITE)
-                    name_place_rect = name_place_text.get_rect(x=285, y=315)
-                    self.screen.blit(name_place_text, name_place_rect)
+        self.screen.fill(BLACK) 
 
-                if entering_name and len(player_name) < 3:
-                    if event.type == pygame.KEYDOWN:
-                        if event.unicode.isalpha():
-                            player_name += event.unicode
-                        #FIX THIS!!!!!
-                        # elif event.key == pygame.K_BACKSPACE:
-                        #     print("Backspace key pressed")
-                        #     player_name = player_name[:-1]
+    def show_score(self):
+        """Game over menu """
+        show_score = True
+
+        title_upper = self.smediumfont.render("THE LAST BRAVE", True, BLACK)
+        title_upper_rect = title_upper.get_rect(x=300, y=30)
+
+        title_lower = self.smediumfont.render("WARRIOR'S SACRIFICE", True, BLACK)
+        title_lower_rect = title_lower.get_rect(x=250, y=90)
+
+        # Clear the screen at the beginning of each frame
+        self.screen.blit(self.intro_background, (0, 0))
+
+        # Display the game over title
+        self.screen.blit(title_upper, title_upper_rect)
+        self.screen.blit(title_lower, title_lower_rect)
+
+        # Display the player's score in the middle of the screen
+        score_text = self.largefont.render(f'Score: {self.player.score}', True, BLACK)
+        score_rect = score_text.get_rect(x=225, y=170)
+        self.screen.blit(score_text, score_rect)
+
+        menu_button = Button(80, 380, 140, 35, WHITE, BLACK, 'Return To Menu', 32)
+
+        restart_button = Button(260, 380, 120, 35, WHITE, BLACK, 'Restart Game', 32)
+
+        exit_button = Button(440, 380, 100, 35, WHITE, BLACK, 'Exit Game', 32)
+
+        
+        while self.running and show_score:
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    self.running = False
 
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
 
             # If the menu button is pressed, go to the menu
             if menu_button.is_pressed(mouse_pos, mouse_pressed):
-                game_over = False
+                show_score = False
                 self.intro_screen('Start Game')
 
             # If the restart button is pressed, restart the game
             elif restart_button.is_pressed(mouse_pos, mouse_pressed):
-                game_over = False
+                show_score = False
                 self.main()
                 game.new()
 
             # If the exit button is pressed, exit the game
             elif exit_button.is_pressed(mouse_pos, mouse_pressed):
-                if entering_name:
-                    self.highscore_manager.add_highscore(player_name, self.player.score)
-                    self.highscore_manager.save_highscores()
+                show_score = False
                 self.running = False
-
-            elif save_button.is_pressed(mouse_pos, mouse_pressed) and not score_saved:
-                if entering_name and len(player_name) == 3:  # Check the length of the player's name
-                    self.highscore_manager.add_highscore(player_name, self.player.score)
-                    self.highscore_manager.save_highscores()
-                    score_saved = True  # Set the flag to True to indicate that the score has been saved
-                    print("name saved")
-                else:
-                    # Display 3 lines for name
-                    name_place_text = self.smallfont.render('ENTER 3 LETTERS', True, WHITE)
-                    name_place_rect = name_place_text.get_rect(x=380, y=330)
-                    self.screen.blit(name_place_text, name_place_rect)   
-                    print("enter 3 letters")                 
-            
-            # # Handle backspace key outside the nested event loop
-            # keys = pygame.key.get_pressed()
-            # if entering_name and len(player_name) > 0 and keys[pygame.K_BACKSPACE]:
-            #     player_name = player_name[:-1]
-  
-            # Display the entered name
-            if entering_name:
-                name_text = self.font.render(player_name, True, WHITE)
-                name_rect = name_text.get_rect(x=275, y=240)
-                self.screen.blit(name_text, name_rect)
 
             self.screen.blit(menu_button.image, menu_button.rect)
             self.screen.blit(restart_button.image, restart_button.rect)
@@ -314,20 +285,96 @@ class Game:
 
             self.clock.tick(FPS)
             pygame.display.update()
+ #next update have one of the characters animated on the botton of the screen walking. (Random? The on you selected? all 4?)
+    def show_high_score(self):
+        """Enter High Score """
+        show_high_score= True
+        entering_name = False
+        player_name = ""
+        score_saved = False
+
+        title = self.font.render("YOU HAVE A HIGH SCORE", True, YELLOW)
+        title_rect = title.get_rect(x=55, y=50)
+
+        save_button = Button(400, 280, 100, 40, WHITE, BLACK, 'SAVE SCORE', 32)
+        
+        while self.running and show_high_score:
+            for event in pygame.event.get():
+
+                # Clear the screen at the beginning of each frame
+                self.screen.blit(self.game_won_background, (0, 0))
+
+                # Display the high score title
+                self.screen.blit(title, title_rect)
+
+                if event.type == pygame.QUIT:
+                    self.running = False
+
+                entering_name = True
+
+                # Display the instruction to enter a name
+                enter_name_text = self.font.render('ENTER NAME', True, BLACK)
+                enter_name_rect = enter_name_text.get_rect(x=200, y=150)
+                self.screen.blit(enter_name_text, enter_name_rect)
+
+                # Display 3 lines for name
+                name_place_text = self.smallfont.render('_    _    _', True, WHITE)
+                name_place_rect = name_place_text.get_rect(x=285, y=315)
+                self.screen.blit(name_place_text, name_place_rect)
+
+                if entering_name:
+                    if event.type == pygame.KEYDOWN:
+                        if event.unicode.isalpha() and len(player_name) < 3:
+                            player_name += event.unicode
+                        
+                        elif event.key == pygame.K_BACKSPACE:
+                            print("Backspace key pressed")
+                            player_name = player_name[:-1]
+
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            #if the player name has 3 characters show the save button
+            if len(player_name) == 3:
+                self.screen.blit(save_button.image, save_button.rect)
+
+            if save_button.is_pressed(mouse_pos, mouse_pressed) and not score_saved:
+                self.highscore_manager.add_highscore(player_name, self.player.score)
+                self.highscore_manager.save_highscores()
+                score_saved = True  # Set the flag to True to indicate that the score has been saved
+                show_high_score= False
+                self.show_score()
+                print("name saved")
+            else:
+                score_saved=False
+
+            # Display the entered name
+            if entering_name:
+                name_text = self.font.render(player_name, True, WHITE)
+                name_rect = name_text.get_rect(x=285, y=240)
+                self.screen.blit(name_text, name_rect)
+
+            self.clock.tick(FPS)
+            pygame.display.update()  
+              
+        self.screen.fill(BLACK)    
 
     def highscore_screen(self):
         """Display high scores on a screen."""
+
+        highscore = True
 
         highscores = self.highscore_manager.get_highscores()
 
         highscore_title = self.font.render('High Scores', True, WHITE)
         highscore_title_rect = highscore_title.get_rect(center=(WIN_WIDTH // 2, 50))
 
-        back_button = Button(276, 350, 85, 30, WHITE, BLACK, 'Back to Menu', 24)
+        back_button = Button(276, 420, 85, 30, WHITE, BLACK, 'Back to Menu', 24)
 
-        while True:
+        while highscore is True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    highscore = False
                     pygame.quit()
                     sys.exit()
 
@@ -335,7 +382,8 @@ class Game:
             mouse_pressed = pygame.mouse.get_pressed()
 
             if back_button.is_pressed(mouse_pos, mouse_pressed):
-                return  # Return to the intro screen
+                highscore = False
+                game.intro_screen('Start Game')  # Return to the intro screen
 
             # Clear the screen
             self.screen.fill(BLACK)
@@ -364,8 +412,8 @@ class Game:
             # Display the title
             self.screen.blit(highscore_title, highscore_title_rect)
 
-            pygame.display.flip()
             self.clock.tick(FPS)
+            pygame.display.update()
 
     def intro_screen(self, startresume):
         """Intro screen menu parameters start/resume"""
@@ -373,15 +421,17 @@ class Game:
         intro = True
 
         title = self.font.render('The Last Warrior', True, BLACK)
-        title_rect = title.get_rect(x=125, y=170)
+        title_rect = title.get_rect(x=130, y=170)
 
-        play_button = Button(140, 320, 100, 40, WHITE, BLACK, f"{startresume}", 32)
+        play_button = Button(240, 280, 180, 70, WHITE, BLACK, f"{startresume}", 60)
 
-        exit_button = Button(420, 320, 100, 40, WHITE, BLACK, 'Exit Game', 32)
+        exit_button = Button(420, 370, 100, 40, WHITE, BLACK, 'EXIT GAME', 32)
 
-        highscore_button = Button(280, 320, 100, 40, WHITE, BLACK, 'High Scores', 32)
+        highscore_button = Button(280, 370, 100, 40, WHITE, BLACK, 'HIGH SCORES', 32)
 
-        while intro:
+        how_to_button = Button(140, 370, 100, 40, WHITE, BLACK, 'HOW TO PLAY', 32)
+
+        while intro is True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     intro = False
@@ -401,14 +451,20 @@ class Game:
                 sys.exit()
 
             elif highscore_button.is_pressed(mouse_pos, mouse_pressed):
-                # intro = False
+                intro = False
                 self.highscore_screen()
+
+            elif how_to_button.is_pressed(mouse_pos, mouse_pressed):
+                intro = False
+                self.instructions()            
 
             self.screen.blit(self.intro_background, (0,0))
             self.screen.blit(title, title_rect)
             self.screen.blit(play_button.image, play_button.rect)
             self.screen.blit(exit_button.image, exit_button.rect)
             self.screen.blit(highscore_button.image, highscore_button.rect)
+            self.screen.blit(how_to_button.image, how_to_button.rect)
+
             self.clock.tick(FPS)
             pygame.display.update()
 
@@ -501,6 +557,36 @@ class Game:
             self.clock.tick(FPS)
             pygame.display.update()
 
+    def instructions(self):
+
+        instructions= True
+
+        back_button = Button(280, 420, 85, 30, WHITE, BLACK, 'Back to Menu', 24)
+
+        while instructions is True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    instructions = False
+                    pygame.quit()
+                    sys.exit()
+
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            # Clear the screen
+            self.screen.blit(self.controls_background, (0,0))
+
+            # Display back button
+            self.screen.blit(back_button.image, back_button.rect)
+
+            if back_button.is_pressed(mouse_pos, mouse_pressed):
+                  # Return to the intro screen
+                  instructions = False
+                  game.intro_screen('Start Game')
+
+            self.clock.tick(FPS)
+            pygame.display.update()
+        
 class Button:
     """Class for button"""
 
@@ -574,8 +660,7 @@ class HighscoreManager:
             tenth_highscore = int(self.highscores[9].split(': ')[1])
             return score > tenth_highscore
 
-
-"""Game object"""
+#next update fix this make this main game loop
 
 game = Game()
 try:

@@ -40,6 +40,7 @@ WHITE = (255,255,255)
 
 #B = Blocked, P = Player, T = Tree, E = Enemy
 tilemap = [
+    
     'TTTTTTTTTTTTTTTTTTTT',
     'T.......E..........T',
     'T..E...........E...T',
@@ -56,3 +57,4 @@ tilemap = [
     'T........B.........T',
     'TTTTTTTTTTTTTTTTTTTT', 
 ]
+
