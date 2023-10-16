@@ -159,7 +159,7 @@ class Game:
             4: Spritesheet('images/soren.png'),
         }
         self.character_spritesheet = self.char_dictionary[self.char_selection]
-        game.new()
+        self.new()
 
     def main(self):
         """game loop"""
@@ -272,7 +272,7 @@ class Game:
             elif restart_button.is_pressed(mouse_pos, mouse_pressed):
                 show_score = False
                 self.main()
-                game.new()
+                self.new()
 
             # If the exit button is pressed, exit the game
             elif exit_button.is_pressed(mouse_pos, mouse_pressed):
@@ -383,7 +383,7 @@ class Game:
 
             if back_button.is_pressed(mouse_pos, mouse_pressed):
                 highscore = False
-                game.intro_screen('Start Game')  # Return to the intro screen
+                self.intro_screen('Start Game')  # Return to the intro screen
 
             # Clear the screen
             self.screen.fill(BLACK)
@@ -521,7 +521,7 @@ class Game:
 
             if menu_button.is_pressed(mouse_pos, mouse_pressed):
                 char_sel = True
-                game.intro_screen('Start Game')
+                self.intro_screen('Start Game')
 
             elif valen_button.is_pressed(mouse_pos, mouse_pressed):
                 char_sel = False
@@ -582,7 +582,7 @@ class Game:
             if back_button.is_pressed(mouse_pos, mouse_pressed):
                   # Return to the intro screen
                   instructions = False
-                  game.intro_screen('Start Game')
+                  self.intro_screen('Start Game')
 
             self.clock.tick(FPS)
             pygame.display.update()
@@ -660,24 +660,28 @@ class HighscoreManager:
             tenth_highscore = int(self.highscores[9].split(': ')[1])
             return score > tenth_highscore
 
-#next update fix this make this main game loop
-
-game = Game()
-try:
-    pygame.mixer.music.load('Hawkin - Woods.mp3')
-    pygame.mixer.music.play(-1)
-except pygame.error:
+def run_game():
+    game = Game()
+    
+    try:
+        pygame.mixer.music.load('Hawkin - Woods.mp3')
+        pygame.mixer.music.play(-1)
+    except pygame.error:
         print('Cannot load sound')
-game.intro_screen('Start Game')
-game.new()
+    
+    game.intro_screen('Start Game')
+    game.new()
 
-# game loop if the game is running be in main, until playing is false, the game over
-while game.running:
-    game.main()
-    game.game_over()
+    # Game loop if the game is running, be in main, until playing is false, the game is over
+    while game.running:
+        game.main()
+        game.game_over()
 
-pygame.quit()
-sys.exit()
+    pygame.quit()
+    sys.exit()
+
+if __name__ == '__main__':
+    run_game()
 
 
 

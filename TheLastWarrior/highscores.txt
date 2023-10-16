@@ -1,5 +1,10 @@
+ASD: 10
+ASD: 7
+BOB: 7
+CAT: 7
 AAA: 4
 AAA: 4
+ASD: 4
+ASD: 3
 ADA: 2
 DDD: 2
-AAA: 0
