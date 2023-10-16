@@ -10,11 +10,11 @@ Sierra Brightly
 
 Bob
 
-Lisa
+Penny
 
 Shiro
 
-Kevin
+June
 
 
 Team Contributions:
@@ -23,7 +23,7 @@ Sierra:
 
     Player Class:
     
-    - Created player movement that allows for the "camera" to follow the character around in the game. 
+    - Created player movement that allows for the "camera" to follow the character around in the game.
     
     - Collisions:
     
@@ -72,33 +72,36 @@ June:
     
 
 Features:
--Menu
--Character Selection
--Unlimited enemies to kill that "seek" player
--3 lives
--Game over screen that flashes for a second after player dies
--High score screen that pops up when a high score is achieved that allows players to input a name and save it. 
--Score screen that shows player score after game over or high score that has buttons for back to menu, restart with that character, or exit
--Camera follows character
--Player is kicked back by enemy attack
--Animations in movement and attack
--Plays Music
+
+    -Menu
+    -Character Selection
+    -Unlimited enemies to kill that "seek" player
+    -3 lives
+    -Game over screen that flashes for a second after player dies
+    -High score screen that pops up when a high score is achieved that allows players to input a name and save it. 
+    -Score screen that shows player score after game over or high score that has buttons for back to menu, restart with that character, or exit
+    -Camera follows character
+    -Player is kicked back by enemy attack
+    -Animations in movement and attack
+    -Plays Music
 
 Sources:
-ShawCode: https://www.youtube.com/watch?v=crUF36OkGDw
-    Basic layout for game
-    spritesheets
-EdZoft: https://www.youtube.com/watch?v=EI1tJkUu5ms
-    character selection
-https://pipoya.itch.io/pipoya-free-rpg-character-sprites-32x32
-    spritesheets
-https://lamorapedia.itch.io/grasslands-pixel-art-top-down
-    spritesheets
 
-(Watching for better examples for enemy movement)
+    ShawCode: https://www.youtube.com/watch?v=crUF36OkGDw
+        Basic layout for game
+        spritesheets
+    EdZoft: https://www.youtube.com/watch?v=EI1tJkUu5ms
+        character selection
+    https://pipoya.itch.io/pipoya-free-rpg-character-sprites-32x32
+        spritesheets
+    https://lamorapedia.itch.io/grasslands-pixel-art-top-down
+        spritesheets
+    
+    (Watching for better examples for enemy movement)
 
 
 Current WIPs:
+
     1. Fix gameover menu(Some text not smooth and print test is failing for a single button press. Possible issue with loop/rendering/updating???) Maybe split it into different methods? (DONE)
         1.1 Totally redid the game over section and this created a new problem that makes the Game over screen not dissapear until a mouse is moved to go on to the next screen. (Rendering issues?)
     2. Fix enemy movement and spawning. Not happy with it.
@@ -108,6 +111,7 @@ Current WIPs:
     6. Create more tests.
 
 Future Future Upgrades:
+
     1. Have each character have their own style of attack
     2. Have settings (difficulty level, sounds, etc.)
     3. Have a pause game option which allows you to change settings or return to the menu. 
