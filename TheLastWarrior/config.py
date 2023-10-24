@@ -7,7 +7,8 @@ Date:November 29, 2022
 Description:
 Welcome to The Last Warrior! 
 This is a mini RPG. In this game, you can choose between four characters. 
-Once you've made your choice it's your job to kill all the enemies with the three lives you are given. 
+Once you've made your choice it's your job to kill all the enemies with 
+the three lives you are given. 
 
 This file is for configurations
 """
@@ -40,7 +41,6 @@ WHITE = (255,255,255)
 
 #B = Blocked, P = Player, T = Tree, E = Enemy
 tilemap = [
-    
     'TTTTTTTTTTTTTTTTTTTT',
     'T.......E..........T',
     'T..E...........E...T',
@@ -57,4 +57,3 @@ tilemap = [
     'T........B.........T',
     'TTTTTTTTTTTTTTTTTTTT', 
 ]
-

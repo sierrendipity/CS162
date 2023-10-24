@@ -1,7 +1,8 @@
+import sys
 import pygame
 from sprites import *
 from config import *
-import sys
+
 
 class Game:
     """class for game"""
@@ -35,6 +36,7 @@ class Game:
         self.attack_spritesheet = Spritesheet('images/attack.png')
         self.enemy_spritesheet = Spritesheet('images/enemy01.png')
         self.intro_background = pygame.image.load('./images/introbackground.png')
+        self.intro2_background = pygame.image.load('./images/intro2background.png')
         self.choose_char_background = pygame.image.load('./images/char_select_background.png')
         self.game_over_background = pygame.image.load('./images/gameover.png')
         self.game_won_background = pygame.image.load('./images/gamewon.png')
@@ -50,7 +52,7 @@ class Game:
             new_enemy = Enemy(self, x, y)
             self.enemies.add(new_enemy)
 
-    def createTilemap(self):
+    def create_tilemap(self):
         """creates the tilemap for the game, from the info in config"""
 
         #itterates through tilemap
@@ -94,7 +96,7 @@ class Game:
         self.enemies = pygame.sprite.LayeredUpdates()
         self.attacks = pygame.sprite.LayeredUpdates()
 
-        self.createTilemap()
+        self.create_tilemap()
 
     def events(self):
         """game loop events"""
@@ -103,9 +105,7 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
-            # if event.type ==  pygame.MOUSEBUTTONDOWN: #Test
-            #     game.new()
-            #     game.main()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if self.player.facing == 'up':
@@ -160,6 +160,12 @@ class Game:
         }
         self.character_spritesheet = self.char_dictionary[self.char_selection]
         self.new()
+
+        #  # Start the timer after the character is chosen
+        # self.start_time = pygame.time.get_ticks()
+        
+        # # Introduce a 1-second delay (1000 milliseconds)
+        # pygame.time.delay(1000)
 
     def main(self):
         """game loop"""
@@ -236,7 +242,7 @@ class Game:
         title_lower_rect = title_lower.get_rect(x=250, y=90)
 
         # Clear the screen at the beginning of each frame
-        self.screen.blit(self.intro_background, (0, 0))
+        self.screen.blit(self.intro2_background, (0, 0))
 
         # Display the game over title
         self.screen.blit(title_upper, title_upper_rect)
@@ -420,16 +426,16 @@ class Game:
 
         intro = True
 
-        title = self.font.render('The Last Warrior', True, BLACK)
-        title_rect = title.get_rect(x=130, y=170)
+        title1 = self.font.render('THE LAST WARRIOR', True, BLACK)
+        title1_rect = title1.get_rect(x=120, y=14)
 
-        play_button = Button(240, 280, 180, 70, WHITE, BLACK, f"{startresume}", 60)
+        play_button = Button(255, 140, 140, 50, WHITE, BLACK, f"{startresume}", 40)
 
-        exit_button = Button(420, 370, 100, 40, WHITE, BLACK, 'EXIT GAME', 32)
+        exit_button = Button(255, 320, 140, 50, WHITE, BLACK, 'EXIT GAME', 40)
 
-        highscore_button = Button(280, 370, 100, 40, WHITE, BLACK, 'HIGH SCORES', 32)
+        highscore_button = Button(255, 260, 140, 50, WHITE, BLACK, 'HIGH SCORES', 40)
 
-        how_to_button = Button(140, 370, 100, 40, WHITE, BLACK, 'HOW TO PLAY', 32)
+        how_to_button = Button(255, 200, 140, 50, WHITE, BLACK, 'HOW TO PLAY', 40)
 
         while intro is True:
             for event in pygame.event.get():
@@ -442,7 +448,7 @@ class Game:
 
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
-                if startresume == 'Start Game':
+                if startresume == 'START GAME':
                     self.character_select()
 
             elif exit_button.is_pressed(mouse_pos, mouse_pressed):
@@ -459,7 +465,7 @@ class Game:
                 self.instructions()            
 
             self.screen.blit(self.intro_background, (0,0))
-            self.screen.blit(title, title_rect)
+            self.screen.blit(title1, title1_rect)
             self.screen.blit(play_button.image, play_button.rect)
             self.screen.blit(exit_button.image, exit_button.rect)
             self.screen.blit(highscore_button.image, highscore_button.rect)
@@ -521,7 +527,7 @@ class Game:
 
             if menu_button.is_pressed(mouse_pos, mouse_pressed):
                 char_sel = True
-                self.intro_screen('Start Game')
+                self.intro_screen('START GAME')
 
             elif valen_button.is_pressed(mouse_pos, mouse_pressed):
                 char_sel = False
@@ -582,7 +588,7 @@ class Game:
             if back_button.is_pressed(mouse_pos, mouse_pressed):
                   # Return to the intro screen
                   instructions = False
-                  self.intro_screen('Start Game')
+                  self.intro_screen('START GAME')
 
             self.clock.tick(FPS)
             pygame.display.update()
@@ -669,7 +675,7 @@ def run_game():
     except pygame.error:
         print('Cannot load sound')
     
-    game.intro_screen('Start Game')
+    game.intro_screen('START GAME')
     game.new()
 
     # Game loop if the game is running, be in main, until playing is false, the game is over
@@ -682,7 +688,3 @@ def run_game():
 
 if __name__ == '__main__':
     run_game()
-
-
-
-

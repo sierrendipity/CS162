@@ -40,8 +40,8 @@ class Player(pygame.sprite.Sprite):
         """initializes the playerparamters: self, game, x, y """
 
         # reset enemy count every time player is reinitialized
-        # global ENEMY_COUNT
-        # ENEMY_COUNT = 10
+        global ENEMY_COUNT
+        ENEMY_COUNT = 10
         self.game = game
 
         #player will be drawn above everything
