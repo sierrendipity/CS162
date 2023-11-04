@@ -1,10 +1,8 @@
-DAD: 23
-BOB: 23
-DAD: 16
-DAD: 11
-JOE: 9
-DAD: 8
-BOB: 8
-CAT: 5
+DOG: 10
+FAN: 6
 BOB: 5
-DAD: 5
+CAT: 4
+BOB: 4
+DAD: 4
+JOE: 0
+ABC: 0

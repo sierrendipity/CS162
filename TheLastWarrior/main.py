@@ -164,7 +164,7 @@ class Game:
         #  # Start the timer after the character is chosen
         # self.start_time = pygame.time.get_ticks()
         
-        # # Introduce a 1-second delay (1000 milliseconds)
+        # # Introduce a 1 sec delay
         # pygame.time.delay(1000)
 
     def main(self):
@@ -179,17 +179,23 @@ class Game:
         except pygame.error:
             raise SystemExit("Error")
             
-    def stats(self,score,lives):
-        """stats for the game. keyword arguments: score, lives"""
+    def stats(self, score, lives):
+        # Render the player's score, lives, and time
+        score_text = self.smallfont.render("SCORE: " + str(score), True, WHITE)
+        score_rect = score_text.get_rect(x=80, y=0)
 
-        score1 = self.smallfont.render("SCORE:" + str(score), True, WHITE)
-        score_rect = score1.get_rect(x=80, y=0)
-        lives1 = self.smallfont.render('LIVES:' + str(lives), True, WHITE)
-        lives_rect = lives1.get_rect(x=0, y=0)
+        lives_text = self.smallfont.render('LIVES: ' + str(lives), True, WHITE)
+        lives_rect = lives_text.get_rect(x=0, y=0)
 
-        self.screen.blit(score1, score_rect)
-        self.screen.blit(lives1, lives_rect)
-        # self.clock.tick(FPS)
+        # Get the current time in milliseconds and convert it to seconds
+        current_time = pygame.time.get_ticks() // 1000
+        time_text = self.smallfont.render('TIME: ' + str(current_time), True, WHITE)
+        time_rect = time_text.get_rect(x=160, y=0)
+
+        # Blit the text onto the screen
+        self.screen.blit(score_text, score_rect)
+        self.screen.blit(lives_text, lives_rect)
+        self.screen.blit(time_text, time_rect)
         pygame.display.update()
         
     def game_over(self):
@@ -272,6 +278,7 @@ class Game:
             # If the menu button is pressed, go to the menu
             if menu_button.is_pressed(mouse_pos, mouse_pressed):
                 show_score = False
+                self.new()
                 self.intro_screen('Start Game')
 
             # If the restart button is pressed, restart the game

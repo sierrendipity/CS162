@@ -91,7 +91,7 @@ class Player(pygame.sprite.Sprite):
 
         self.x_change = 0
         self.y_change = 0
-        
+       
     def movement(self):
         """movement of player function, this is with a 'camera' that will move with the player"""
 
